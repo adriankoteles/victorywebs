@@ -8,7 +8,7 @@ import { ContactModal } from "./ContactModal";
 
 // --- LUXUSNÍ ANIMACE ---
 
-const fadeInVariants = {
+const fadeInVariants: any = {
   hidden: { opacity: 0, y: 40 },
   visible: { 
     opacity: 1, 
@@ -17,7 +17,7 @@ const fadeInVariants = {
   }
 };
 
-const staggerContainer = {
+const staggerContainer: any = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,

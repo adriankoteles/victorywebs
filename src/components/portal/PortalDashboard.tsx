@@ -35,7 +35,7 @@ export function PortalDashboard({ client, projects, invoices }: { client: any; p
   const handleOnboardingSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     startTransition(async () => {
-      const res = await updateClientOnboardingAction(client.id, { goals, audience, colors });
+      const res = await updateClientOnboardingAction(client.id, {}, { goals, audience, colors });
       if (res.success) {
         setOnboardingSuccess(true);
       }

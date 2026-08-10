@@ -132,7 +132,7 @@ export function OnboardingFlow({ client }: { client: any }) {
     animate: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: -20 },
   };
-  const transition = { duration: 1.2, ease: [0.22, 1, 0.36, 1] };
+  const transition: any = { duration: 1.2, ease: [0.22, 1, 0.36, 1] };
 
   const TOTAL_QUESTIONS = 8;
   const currentQuestionIdx = step > 3 && step <= 11 ? step - 3 : 0;
