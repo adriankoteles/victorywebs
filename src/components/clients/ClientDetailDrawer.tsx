@@ -351,17 +351,56 @@ export function ClientDetailDrawer({
                     {client.social_media?.onboarding ? (
                       <>
                         <div className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
+                          <p className="text-xs font-semibold text-gray-400 uppercase">Ideální zákazník</p>
+                          <p className="text-sm text-gray-900 mt-1 font-medium whitespace-pre-wrap">{client.social_media.onboarding.idealCustomer || "-"}</p>
+                        </div>
+                        <div className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
+                          <p className="text-xs font-semibold text-gray-400 uppercase">3 Pocity z webu</p>
+                          <p className="text-sm text-gray-900 mt-1 font-medium whitespace-pre-wrap">{client.social_media.onboarding.feelings || "-"}</p>
+                        </div>
+                        <div className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
                           <p className="text-xs font-semibold text-gray-400 uppercase">Cíl webové prezentace</p>
-                          <p className="text-sm text-gray-900 mt-1 font-medium">{client.social_media.onboarding.goals || "-"}</p>
+                          <p className="text-sm text-gray-900 mt-1 font-medium whitespace-pre-wrap">{client.social_media.onboarding.webGoal || "-"}</p>
                         </div>
                         <div className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
-                          <p className="text-xs font-semibold text-gray-400 uppercase">Cílové publikum</p>
-                          <p className="text-sm text-gray-900 mt-1 font-medium">{client.social_media.onboarding.audience || "-"}</p>
+                          <p className="text-xs font-semibold text-gray-400 uppercase">Konkurenční výhoda</p>
+                          <p className="text-sm text-gray-900 mt-1 font-medium whitespace-pre-wrap">{client.social_media.onboarding.competitiveAdvantage || "-"}</p>
                         </div>
                         <div className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
-                          <p className="text-xs font-semibold text-gray-400 uppercase">Preferované barvy a styl</p>
-                          <p className="text-sm text-gray-900 mt-1 font-medium">{client.social_media.onboarding.colors || "-"}</p>
+                          <p className="text-xs font-semibold text-gray-400 uppercase">Technické zázemí & Podklady</p>
+                          <p className="text-sm text-gray-900 mt-1 font-medium leading-relaxed">
+                            <span className="text-gray-500">Logo v křivkách:</span> {client.social_media.onboarding.logoVector || "-"}<br/>
+                            <span className="text-gray-500">Stav textů:</span> {client.social_media.onboarding.textsStatus || "-"}<br/>
+                            <span className="text-gray-500">Stav fotek:</span> {client.social_media.onboarding.photosStatus || "-"}<br/>
+                            <span className="text-gray-500">Doména a hosting:</span> {client.social_media.onboarding.domainHosting || "-"}
+                          </p>
                         </div>
+                        <div className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
+                          <p className="text-xs font-semibold text-gray-400 uppercase">Barvy & Fonty</p>
+                          <p className="text-sm text-gray-900 mt-1 font-medium break-words">Barvy: {client.social_media.onboarding.brandColors || "-"}<br/>Fonty: {client.social_media.onboarding.fonts || "-"}</p>
+                        </div>
+                        <div className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
+                          <p className="text-xs font-semibold text-gray-400 uppercase">Požadované sekce</p>
+                          <p className="text-sm text-gray-900 mt-1 font-medium whitespace-pre-wrap">{client.social_media.onboarding.requiredSections || "-"}</p>
+                        </div>
+                        <div className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
+                          <p className="text-xs font-semibold text-gray-400 uppercase">Inspirace</p>
+                          <p className="text-sm text-gray-900 mt-1 font-medium whitespace-pre-wrap">{client.social_media.onboarding.inspirativeWebs || "-"}</p>
+                        </div>
+                        <div className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
+                          <p className="text-xs font-semibold text-gray-400 uppercase">Podklady (Disk)</p>
+                          <p className="text-sm text-blue-600 mt-1 font-medium break-all">
+                            {client.social_media.onboarding.driveLink ? (
+                              <a href={client.social_media.onboarding.driveLink} target="_blank" rel="noreferrer" className="hover:underline">{client.social_media.onboarding.driveLink}</a>
+                            ) : "-"}
+                          </p>
+                        </div>
+                        {client.social_media.onboarding.notes && (
+                          <div className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
+                            <p className="text-xs font-semibold text-gray-400 uppercase">Poznámky</p>
+                            <p className="text-sm text-gray-900 mt-1 font-medium whitespace-pre-wrap">{client.social_media.onboarding.notes}</p>
+                          </div>
+                        )}
                       </>
                     ) : (
                       <p className="text-[13px] text-gray-500 italic bg-gray-50 p-3 rounded-xl border border-gray-100/50">

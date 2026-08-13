@@ -71,6 +71,12 @@ export function OnboardingFlow({ client }: { client: any }) {
     requiredSections: "",
     inspirativeWebs: "",
     notes: "",
+    idealCustomer: "",
+    feelings: "",
+    logoVector: "",
+    textsStatus: "",
+    photosStatus: "",
+    domainHosting: "",
   });
 
   // Color picker state
@@ -87,7 +93,7 @@ export function OnboardingFlow({ client }: { client: any }) {
 
   const handleNext = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (step < 11) nextStep();
+    if (step < 16) nextStep();
     else handleFinalSubmit();
   };
 
@@ -117,7 +123,7 @@ export function OnboardingFlow({ client }: { client: any }) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
-        if (step > 2 && step < 12) {
+        if (step > 2 && step < 17) {
           handleNext();
         }
       }
@@ -134,14 +140,14 @@ export function OnboardingFlow({ client }: { client: any }) {
   };
   const transition: any = { duration: 1.2, ease: [0.22, 1, 0.36, 1] };
 
-  const TOTAL_QUESTIONS = 8;
-  const currentQuestionIdx = step > 3 && step <= 11 ? step - 3 : 0;
+  const TOTAL_QUESTIONS = 13;
+  const currentQuestionIdx = step > 3 && step <= 16 ? step - 3 : 0;
 
   return (
     <div className="fixed inset-0 bg-[#F5F5F7] text-gray-900 flex flex-col items-center justify-center overflow-y-auto overflow-x-hidden font-sans selection:bg-gray-200">
       
       {/* Progress Bar */}
-      {step > 3 && step <= 11 && (
+      {step > 3 && step <= 16 && (
         <div className="absolute top-0 left-0 right-0 h-1 bg-gray-200 z-50">
           <motion.div 
             className="h-full bg-gray-900"
@@ -152,7 +158,7 @@ export function OnboardingFlow({ client }: { client: any }) {
         </div>
       )}
 
-      {step > 3 && step <= 11 && (
+      {step > 3 && step <= 16 && (
          <div className="absolute top-8 left-8 text-xs font-bold tracking-widest text-gray-400 uppercase">
            Victory Webs
          </div>
@@ -318,11 +324,33 @@ export function OnboardingFlow({ client }: { client: any }) {
           </motion.div>
         )}
 
-        {/* OTÁZKA 3: Cloud link */}
+        {/* OTÁZKA 3: Logo */}
         {step === 6 && (
           <motion.div key="s6" variants={variants} initial="initial" animate="animate" exit="exit" transition={transition} className="w-full max-w-3xl px-6">
             <form onSubmit={handleNext}>
-              <h2 className="text-3xl md:text-4xl font-semibold mb-4 leading-tight">3. Odkaz na vaše podklady</h2>
+              <h2 className="text-3xl md:text-4xl font-semibold mb-4 leading-tight">3. Máte logo v křivkách (vektorech)?</h2>
+              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                <label className={`flex-1 p-6 rounded-2xl border-2 cursor-pointer transition-all ${onboardingData.logoVector === 'Ano' ? 'border-gray-900 bg-gray-50' : 'border-gray-200 hover:border-gray-300'}`}>
+                  <input type="radio" required name="logo" value="Ano" checked={onboardingData.logoVector === 'Ano'} onChange={(e) => setOnboardingData({...onboardingData, logoVector: e.target.value})} className="hidden" />
+                  <span className="text-xl font-semibold">Ano, máme</span>
+                </label>
+                <label className={`flex-1 p-6 rounded-2xl border-2 cursor-pointer transition-all ${onboardingData.logoVector === 'Ne' ? 'border-gray-900 bg-gray-50' : 'border-gray-200 hover:border-gray-300'}`}>
+                  <input type="radio" required name="logo" value="Ne" checked={onboardingData.logoVector === 'Ne'} onChange={(e) => setOnboardingData({...onboardingData, logoVector: e.target.value})} className="hidden" />
+                  <span className="text-xl font-semibold">Ne / Nevím</span>
+                </label>
+              </div>
+              <button type="submit" className="px-8 py-4 bg-gray-900 text-white rounded-full font-semibold hover:bg-black transition-colors flex items-center gap-2">
+                Další <Check className="w-5 h-5" />
+              </button>
+            </form>
+          </motion.div>
+        )}
+
+        {/* OTÁZKA 4: Cloud link */}
+        {step === 7 && (
+          <motion.div key="s7" variants={variants} initial="initial" animate="animate" exit="exit" transition={transition} className="w-full max-w-3xl px-6">
+            <form onSubmit={handleNext}>
+              <h2 className="text-3xl md:text-4xl font-semibold mb-4 leading-tight">4. Odkaz na vaše podklady</h2>
               <p className="text-gray-500 mb-8 text-lg">Prosíme o nahrání loga (SVG/PNG) a fotek na cloud (Google Drive, Dropbox) pro zachování maximální kvality.</p>
               <textarea 
                 autoFocus required value={onboardingData.driveLink} onChange={(e) => setOnboardingData({...onboardingData, driveLink: e.target.value})}
@@ -337,11 +365,49 @@ export function OnboardingFlow({ client }: { client: any }) {
           </motion.div>
         )}
 
-        {/* OTÁZKA 4: Hlavní cíl */}
-        {step === 7 && (
-          <motion.div key="s7" variants={variants} initial="initial" animate="animate" exit="exit" transition={transition} className="w-full max-w-3xl px-6">
+        {/* OTÁZKA 5: Obsah */}
+        {step === 8 && (
+          <motion.div key="s8" variants={variants} initial="initial" animate="animate" exit="exit" transition={transition} className="w-full max-w-4xl px-6">
             <form onSubmit={handleNext}>
-              <h2 className="text-3xl md:text-4xl font-semibold mb-4 leading-tight">4. Co je absolutně hlavním cílem webu?</h2>
+              <h2 className="text-3xl md:text-4xl font-semibold mb-8 leading-tight">5. Jak jste na tom s obsahem (Texty a Fotky)?</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10 text-left">
+                <div>
+                  <h3 className="text-xl font-semibold mb-4 text-gray-700">Texty na web:</h3>
+                  <div className="space-y-3">
+                    {['Mám kompletně připravené', 'Mám rozpracované / dodám', 'Potřebuji pomoci vytvořit'].map(opt => (
+                      <label key={opt} className={`block p-4 rounded-xl border-2 cursor-pointer transition-all ${onboardingData.textsStatus === opt ? 'border-gray-900 bg-gray-50' : 'border-gray-200 hover:border-gray-300'}`}>
+                        <input type="radio" required name="texts" value={opt} checked={onboardingData.textsStatus === opt} onChange={(e) => setOnboardingData({...onboardingData, textsStatus: e.target.value})} className="hidden" />
+                        <span className="text-lg font-medium">{opt}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-4 text-gray-700">Fotografie:</h3>
+                  <div className="space-y-3">
+                    {['Mám vlastní profi fotky', 'Fotky se budou fotit / dodám později'].map(opt => (
+                      <label key={opt} className={`block p-4 rounded-xl border-2 cursor-pointer transition-all ${onboardingData.photosStatus === opt ? 'border-gray-900 bg-gray-50' : 'border-gray-200 hover:border-gray-300'}`}>
+                        <input type="radio" required name="photos" value={opt} checked={onboardingData.photosStatus === opt} onChange={(e) => setOnboardingData({...onboardingData, photosStatus: e.target.value})} className="hidden" />
+                        <span className="text-lg font-medium">{opt}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <button type="submit" className="px-8 py-4 bg-gray-900 text-white rounded-full font-semibold hover:bg-black transition-colors flex items-center gap-2">
+                Další <Check className="w-5 h-5" />
+              </button>
+            </form>
+          </motion.div>
+        )}
+
+        {/* OTÁZKA 6: Hlavní cíl */}
+        {step === 9 && (
+          <motion.div key="s9" variants={variants} initial="initial" animate="animate" exit="exit" transition={transition} className="w-full max-w-3xl px-6">
+            <form onSubmit={handleNext}>
+              <h2 className="text-3xl md:text-4xl font-semibold mb-4 leading-tight">6. Co je absolutně hlavním cílem webu?</h2>
               <p className="text-gray-500 mb-8 text-lg">Získávání leadů? Prodej? Prestižní vizitka?</p>
               <textarea 
                 autoFocus required value={onboardingData.webGoal} onChange={(e) => setOnboardingData({...onboardingData, webGoal: e.target.value})}
@@ -356,11 +422,48 @@ export function OnboardingFlow({ client }: { client: any }) {
           </motion.div>
         )}
 
-        {/* OTÁZKA 5: Konkurence */}
-        {step === 8 && (
-          <motion.div key="s8" variants={variants} initial="initial" animate="animate" exit="exit" transition={transition} className="w-full max-w-3xl px-6">
+        {/* OTÁZKA 7: Ideální zákazník */}
+        {step === 10 && (
+          <motion.div key="s10" variants={variants} initial="initial" animate="animate" exit="exit" transition={transition} className="w-full max-w-3xl px-6">
             <form onSubmit={handleNext}>
-              <h2 className="text-3xl md:text-4xl font-semibold mb-4 leading-tight">5. V čem jste lepší než konkurence?</h2>
+              <h2 className="text-3xl md:text-4xl font-semibold mb-4 leading-tight">7. Kdo je váš ideální zákazník?</h2>
+              <p className="text-gray-500 mb-8 text-lg">Pro koho je web určený, co mu řeší za problém?</p>
+              <textarea 
+                autoFocus required value={onboardingData.idealCustomer} onChange={(e) => setOnboardingData({...onboardingData, idealCustomer: e.target.value})}
+                placeholder="Náš zákazník je..."
+                rows={4}
+                className="w-full bg-transparent border-b-2 border-gray-200 focus:border-gray-900 text-2xl md:text-3xl py-4 focus:outline-none resize-none transition-colors placeholder:text-gray-300 mb-8"
+              />
+              <button type="submit" className="px-8 py-4 bg-gray-900 text-white rounded-full font-semibold hover:bg-black transition-colors flex items-center gap-2">
+                Další <Check className="w-5 h-5" />
+              </button>
+            </form>
+          </motion.div>
+        )}
+
+        {/* OTÁZKA 8: Pocity */}
+        {step === 11 && (
+          <motion.div key="s11" variants={variants} initial="initial" animate="animate" exit="exit" transition={transition} className="w-full max-w-3xl px-6">
+            <form onSubmit={handleNext}>
+              <h2 className="text-3xl md:text-4xl font-semibold mb-4 leading-tight">8. Jaké 3 pocity by měl web v návštěvníkovi vyvolat?</h2>
+              <textarea 
+                autoFocus required value={onboardingData.feelings} onChange={(e) => setOnboardingData({...onboardingData, feelings: e.target.value})}
+                placeholder="1. Důvěra, 2. Profesionalita, 3. Inovace..."
+                rows={3}
+                className="w-full bg-transparent border-b-2 border-gray-200 focus:border-gray-900 text-2xl md:text-3xl py-4 focus:outline-none resize-none transition-colors placeholder:text-gray-300 mb-8"
+              />
+              <button type="submit" className="px-8 py-4 bg-gray-900 text-white rounded-full font-semibold hover:bg-black transition-colors flex items-center gap-2">
+                Další <Check className="w-5 h-5" />
+              </button>
+            </form>
+          </motion.div>
+        )}
+
+        {/* OTÁZKA 9: Konkurence */}
+        {step === 12 && (
+          <motion.div key="s12" variants={variants} initial="initial" animate="animate" exit="exit" transition={transition} className="w-full max-w-3xl px-6">
+            <form onSubmit={handleNext}>
+              <h2 className="text-3xl md:text-4xl font-semibold mb-4 leading-tight">9. V čem jste lepší než konkurence?</h2>
               <textarea 
                 autoFocus required value={onboardingData.competitiveAdvantage} onChange={(e) => setOnboardingData({...onboardingData, competitiveAdvantage: e.target.value})}
                 placeholder="Máme 20 let zkušeností a děláme to jinak..."
@@ -374,11 +477,11 @@ export function OnboardingFlow({ client }: { client: any }) {
           </motion.div>
         )}
 
-        {/* OTÁZKA 6: Sekce */}
-        {step === 9 && (
-          <motion.div key="s9" variants={variants} initial="initial" animate="animate" exit="exit" transition={transition} className="w-full max-w-3xl px-6">
+        {/* OTÁZKA 10: Sekce */}
+        {step === 13 && (
+          <motion.div key="s13" variants={variants} initial="initial" animate="animate" exit="exit" transition={transition} className="w-full max-w-3xl px-6">
             <form onSubmit={handleNext}>
-              <h2 className="text-3xl md:text-4xl font-semibold mb-4 leading-tight">6. Jaké konkrétní sekce web musí obsahovat?</h2>
+              <h2 className="text-3xl md:text-4xl font-semibold mb-4 leading-tight">10. Jaké konkrétní sekce web musí obsahovat?</h2>
               <textarea 
                 autoFocus required value={onboardingData.requiredSections} onChange={(e) => setOnboardingData({...onboardingData, requiredSections: e.target.value})}
                 placeholder="Služby, O nás, Ceník, Kontakt..."
@@ -392,11 +495,11 @@ export function OnboardingFlow({ client }: { client: any }) {
           </motion.div>
         )}
 
-        {/* OTÁZKA 7: Inspirace */}
-        {step === 10 && (
-          <motion.div key="s10" variants={variants} initial="initial" animate="animate" exit="exit" transition={transition} className="w-full max-w-3xl px-6">
+        {/* OTÁZKA 11: Inspirace */}
+        {step === 14 && (
+          <motion.div key="s14" variants={variants} initial="initial" animate="animate" exit="exit" transition={transition} className="w-full max-w-3xl px-6">
             <form onSubmit={handleNext}>
-              <h2 className="text-3xl md:text-4xl font-semibold mb-4 leading-tight">7. Uveďte 2-3 weby, které se vám líbí.</h2>
+              <h2 className="text-3xl md:text-4xl font-semibold mb-4 leading-tight">11. Uveďte 2-3 weby, které se vám líbí.</h2>
               <textarea 
                 autoFocus required value={onboardingData.inspirativeWebs} onChange={(e) => setOnboardingData({...onboardingData, inspirativeWebs: e.target.value})}
                 placeholder="Líbí se mi apple.com kvůli minimalismu..."
@@ -410,11 +513,33 @@ export function OnboardingFlow({ client }: { client: any }) {
           </motion.div>
         )}
 
-        {/* OTÁZKA 8: Poznámky */}
-        {step === 11 && (
-          <motion.div key="s11" variants={variants} initial="initial" animate="animate" exit="exit" transition={transition} className="w-full max-w-3xl px-6">
+        {/* OTÁZKA 12: Doména a hosting */}
+        {step === 15 && (
+          <motion.div key="s15" variants={variants} initial="initial" animate="animate" exit="exit" transition={transition} className="w-full max-w-3xl px-6">
             <form onSubmit={handleNext}>
-              <h2 className="text-3xl md:text-4xl font-semibold mb-4 leading-tight">8. Ještě něco, co bychom měli vědět?</h2>
+              <h2 className="text-3xl md:text-4xl font-semibold mb-4 leading-tight">12. Máte už koupenou doménu a hosting?</h2>
+              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                <label className={`flex-1 p-6 rounded-2xl border-2 cursor-pointer transition-all ${onboardingData.domainHosting === 'Ano' ? 'border-gray-900 bg-gray-50' : 'border-gray-200 hover:border-gray-300'}`}>
+                  <input type="radio" required name="domain" value="Ano" checked={onboardingData.domainHosting === 'Ano'} onChange={(e) => setOnboardingData({...onboardingData, domainHosting: e.target.value})} className="hidden" />
+                  <span className="text-xl font-semibold">Ano, mám</span>
+                </label>
+                <label className={`flex-1 p-6 rounded-2xl border-2 cursor-pointer transition-all ${onboardingData.domainHosting === 'Ne' ? 'border-gray-900 bg-gray-50' : 'border-gray-200 hover:border-gray-300'}`}>
+                  <input type="radio" required name="domain" value="Ne" checked={onboardingData.domainHosting === 'Ne'} onChange={(e) => setOnboardingData({...onboardingData, domainHosting: e.target.value})} className="hidden" />
+                  <span className="text-xl font-semibold">Ne, potřebuji pomoct</span>
+                </label>
+              </div>
+              <button type="submit" className="px-8 py-4 bg-gray-900 text-white rounded-full font-semibold hover:bg-black transition-colors flex items-center gap-2">
+                Další <Check className="w-5 h-5" />
+              </button>
+            </form>
+          </motion.div>
+        )}
+
+        {/* OTÁZKA 13: Poznámky */}
+        {step === 16 && (
+          <motion.div key="s16" variants={variants} initial="initial" animate="animate" exit="exit" transition={transition} className="w-full max-w-3xl px-6">
+            <form onSubmit={handleNext}>
+              <h2 className="text-3xl md:text-4xl font-semibold mb-4 leading-tight">13. Ještě něco, co bychom měli vědět?</h2>
               <textarea 
                 autoFocus value={onboardingData.notes} onChange={(e) => setOnboardingData({...onboardingData, notes: e.target.value})}
                 placeholder="Cokoliv vás napadne (volitelné)..."
@@ -456,7 +581,7 @@ export function OnboardingFlow({ client }: { client: any }) {
         {/* OUTRO 1 */}
         {step === 101 && (
           <motion.h2 key="o1" variants={variants} initial="initial" animate="animate" exit="exit" transition={{ duration: 1.5 }} className="text-4xl md:text-7xl font-bold tracking-tight text-center px-6">
-            Vítejte v rodině <br/>Victory Webs.
+            Děkujeme za <br/>vyplnění.
           </motion.h2>
         )}
 
@@ -470,7 +595,7 @@ export function OnboardingFlow({ client }: { client: any }) {
         {/* FAKEOUT / UPSELL INTRO */}
         {step === 103 && (
           <motion.h2 key="o3" variants={variants} initial="initial" animate="animate" exit="exit" transition={{ duration: 1.5 }} className="text-3xl md:text-5xl font-medium tracking-tight text-center px-6 text-gray-400 leading-tight">
-            Ajo, málem bych zapomněl...
+            Ještě jedna maličkost...
           </motion.h2>
         )}
         

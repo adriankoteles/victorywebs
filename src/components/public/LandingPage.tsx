@@ -60,18 +60,26 @@ const TextReveal = ({ text, className = "" }: { text: string, className?: string
       }}
       className={className}
     >
-      {words.map((word, i) => (
-        <motion.span 
-          key={i} 
-          variants={{
-            hidden: { opacity: 0, y: 20, rotateX: -20 },
-            visible: { opacity: 1, y: 0, rotateX: 0, transition: { type: "spring", damping: 20, stiffness: 100 } }
-          }}
-          className="inline-block mr-[0.3em] origin-bottom"
-        >
-          {word}
-        </motion.span>
-      ))}
+      {words.map((word, i) => {
+        const isHighlighted = word.startsWith("*") && word.endsWith("*");
+        const cleanWord = isHighlighted ? word.slice(1, -1) : word;
+        return (
+          <motion.span 
+            key={i} 
+            variants={{
+              hidden: { opacity: 0, y: 20, rotateX: -20 },
+              visible: { opacity: 1, y: 0, rotateX: 0, transition: { type: "spring", damping: 20, stiffness: 100 } }
+            }}
+            className={`inline-block mr-[0.3em] origin-bottom ${
+              isHighlighted 
+                ? "bg-[#191919] text-white px-3 py-0.5 rounded-xl md:rounded-2xl -rotate-2 shadow-lg mx-1" 
+                : ""
+            }`}
+          >
+            {cleanWord}
+          </motion.span>
+        );
+      })}
     </motion.div>
   );
 };
@@ -120,7 +128,6 @@ export function LandingPage() {
       <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4 border-b border-slate-200/60 bg-white/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="text-xl font-bold tracking-tighter flex items-center gap-2 text-slate-900">
-            <div className="w-8 h-8 bg-[#191919] text-white rounded-lg flex items-center justify-center font-black">V</div>
             Victory Webs
           </div>
           <Link href="/portal" className="px-5 py-2.5 bg-[#191919] text-white hover:scale-[1.02] active:scale-[0.98] shadow-md shadow-black/10 rounded-full text-sm font-bold transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] flex items-center gap-2">
@@ -132,8 +139,13 @@ export function LandingPage() {
       {/* 2. HERO SEKCE & LIVE METRIKY */}
       <section className="relative pt-48 pb-20 px-6 min-h-screen flex flex-col items-center justify-center overflow-hidden">
         
-        {/* Jemný glow na pozadí */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-slate-200/40 blur-[120px] rounded-full pointer-events-none" />
+        {/* Pozadí hero sekce */}
+        <div className="absolute inset-0 z-0">
+          <div className="relative h-full w-full bg-[#fcfcfc]">
+            <div className="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(#00000033_1px,#fcfcfc_1px)] bg-[size:20px_20px] "></div>
+            <div className="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(100%_100%_at_50%_50%,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_90%)]"></div>
+          </div>
+        </div>
 
         <StaggerSection className="max-w-4xl mx-auto text-center relative z-10 mb-20">
           
@@ -142,10 +154,10 @@ export function LandingPage() {
             Přijímáme max. 2 projekty měsíčně
           </FadeIn>
           
-          <TextReveal text="Váš web má prodávat. Ne jen existovat." className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight text-slate-900" />
+          <TextReveal text="Váš web má *prodávat.* Ne jen existovat." className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight text-[#191919]" />
           
-          <FadeIn className="text-lg md:text-xl text-slate-500 mb-12 max-w-2xl mx-auto leading-relaxed">
-            Stavíme dravé webové prezentace a aplikace na Next.js. Získejte dominanci na trhu s vlastním klientským portálem pro sledování vývoje v reálném čase.
+          <FadeIn className="text-lg md:text-xl text-neutral-500 mb-12 max-w-2xl mx-auto leading-relaxed">
+            Stavíme dravé webové prezentace a aplikace. Získejte dominanci na trhu s vlastním klientským portálem pro sledování vývoje v reálném čase.
           </FadeIn>
           
           <FadeIn className="flex flex-col sm:flex-row items-center justify-center gap-4 mx-auto">
@@ -183,67 +195,73 @@ export function LandingPage() {
 
       </section>
 
-      {/* 3. SEKCE "TYPY WEBU A ŘEŠENÍ" */}
-      <section id="reseni" className="py-32 px-6 bg-white border-y border-slate-200/50">
+      {/* 3. SEKCE "TYPY WEBU A ŘEŠENÍ" (MERGED) */}
+      <section id="reseni" className="py-32 px-6 bg-[#191919] text-white border-y border-white/5">
         <StaggerSection className="max-w-6xl mx-auto">
-          <FadeIn className="text-center mb-24">
-            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-4 text-slate-900">Co pro vás můžeme postavit?</h2>
-            <p className="text-slate-500 text-xl max-w-2xl mx-auto">Vyberte si řešení na míru vašim aktuálním obchodním cílům.</p>
-          </FadeIn>
+          <div className="text-center mb-24">
+            <FadeIn className="inline-flex items-center justify-center px-4 py-2 bg-white/10 rounded-full text-xs font-bold uppercase tracking-widest text-slate-300 mb-6 border border-white/10">
+              Naše služby
+            </FadeIn>
+            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-4 leading-tight">Co pro vás můžeme postavit?</h2>
+            <p className="text-slate-400 text-xl max-w-2xl mx-auto">Každý byznys potřebuje něco jiného. Vyberte si řešení na míru vašim aktuálním obchodním cílům.</p>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             
-            <FadeIn className="bg-slate-50 border border-slate-200 rounded-[2rem] p-8 hover:-translate-y-2 hover:shadow-xl transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col">
+            {/* 1. Landing Page */}
+            <FadeIn className="bg-white/5 border border-white/10 rounded-[2rem] p-8 hover:bg-white/10 transition-colors flex flex-col">
               <div className="mb-6">
-                <Target className="w-10 h-10 text-[#191919] mb-4" />
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">Landing Page</h3>
-                <p className="text-slate-500">Konverzní jednostránkový web navržený pro reklamní kampaně a rychlý sběr poptávek.</p>
+                <Target className="w-10 h-10 text-white mb-4" />
+                <h3 className="text-2xl font-bold mb-2">1. Landing Page</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">Jednostránkový web bez složitého menu, který směřuje pozornost k jediné akci. Ideální pro PPC a kampaně na sociálních sítích.</p>
               </div>
               <ul className="space-y-4 mb-8 flex-1">
-                <li className="flex items-start gap-3 text-sm font-medium text-slate-700"><CheckCircle2 className="w-5 h-5 text-[#191919] shrink-0" /> Vysoký konverzní poměr</li>
-                <li className="flex items-start gap-3 text-sm font-medium text-slate-700"><CheckCircle2 className="w-5 h-5 text-[#191919] shrink-0" /> Napojení na e-mailing</li>
-                <li className="flex items-start gap-3 text-sm font-medium text-slate-700"><CheckCircle2 className="w-5 h-5 text-[#191919] shrink-0" /> Bleskové spuštění</li>
+                <li className="flex items-start gap-3 text-sm font-medium text-slate-300"><CheckCircle2 className="w-5 h-5 text-white shrink-0" /> Vysoký konverzní poměr</li>
+                <li className="flex items-start gap-3 text-sm font-medium text-slate-300"><CheckCircle2 className="w-5 h-5 text-white shrink-0" /> Rychlý sběr leadů a prodej</li>
+                <li className="flex items-start gap-3 text-sm font-medium text-slate-300"><CheckCircle2 className="w-5 h-5 text-white shrink-0" /> Bleskové spuštění</li>
               </ul>
-              <div className="pt-6 border-t border-slate-200">
-                <span className="text-xs font-bold uppercase tracking-widest text-slate-400">Dodání</span>
-                <p className="font-bold text-slate-900">7 – 10 dnů</p>
+              <div className="pt-6 border-t border-white/10">
+                <span className="text-xs font-bold uppercase tracking-widest text-slate-500">Dodání</span>
+                <p className="font-bold text-white">7 – 10 dnů</p>
               </div>
             </FadeIn>
 
-            <FadeIn className="bg-white border-2 border-[#191919] rounded-[2rem] p-8 shadow-2xl shadow-slate-200/80 hover:-translate-y-2 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col relative transform md:-translate-y-6">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#191919] text-white px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest shadow-xl">
+            {/* 2. Webová Prezentace */}
+            <FadeIn className="bg-white/10 border-2 border-white/20 rounded-[2rem] p-8 shadow-2xl shadow-black/50 hover:-translate-y-2 transition-all duration-500 flex flex-col relative transform md:-translate-y-6">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white text-[#191919] px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest shadow-xl">
                 Nejoblíbenější
               </div>
               <div className="mb-6 mt-4">
-                <MonitorSmartphone className="w-10 h-10 text-[#191919] mb-4" />
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">Webová Prezentace</h3>
-                <p className="text-slate-600">Kompletní profesionální web pro firmy. Více podstránek, ukázky služeb, ceník a dokonalá vizitka.</p>
+                <MonitorSmartphone className="w-10 h-10 text-white mb-4" />
+                <h3 className="text-2xl font-bold mb-2">2. Webová prezentace</h3>
+                <p className="text-slate-300 text-sm leading-relaxed">Plnohodnotný vícestránkový web, který funguje jako vaše dokonalá digitální pobočka. Zvýší důvěryhodnost vaší značky.</p>
               </div>
               <ul className="space-y-4 mb-8 flex-1">
-                <li className="flex items-start gap-3 text-sm font-medium text-slate-800"><CheckCircle2 className="w-5 h-5 text-[#191919] shrink-0" /> Neomezený počet podstránek</li>
-                <li className="flex items-start gap-3 text-sm font-medium text-slate-800"><CheckCircle2 className="w-5 h-5 text-[#191919] shrink-0" /> CMS pro úpravu textů</li>
-                <li className="flex items-start gap-3 text-sm font-medium text-slate-800"><CheckCircle2 className="w-5 h-5 text-[#191919] shrink-0" /> Extrémní SEO výkon (100/100)</li>
+                <li className="flex items-start gap-3 text-sm font-medium text-slate-200"><CheckCircle2 className="w-5 h-5 text-white shrink-0" /> Neomezený počet podstránek</li>
+                <li className="flex items-start gap-3 text-sm font-medium text-slate-200"><CheckCircle2 className="w-5 h-5 text-white shrink-0" /> CMS pro snadnou úpravu obsahu</li>
+                <li className="flex items-start gap-3 text-sm font-medium text-slate-200"><CheckCircle2 className="w-5 h-5 text-white shrink-0" /> Extrémní SEO výkon (organika)</li>
               </ul>
-              <div className="pt-6 border-t border-slate-100">
+              <div className="pt-6 border-t border-white/10">
                 <span className="text-xs font-bold uppercase tracking-widest text-slate-400">Dodání</span>
-                <p className="font-bold text-slate-900">14 – 21 dnů</p>
+                <p className="font-bold text-white">14 – 21 dnů</p>
               </div>
             </FadeIn>
 
-            <FadeIn className="bg-slate-50 border border-slate-200 rounded-[2rem] p-8 hover:-translate-y-2 hover:shadow-xl transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col">
+            {/* 3. Webová Aplikace */}
+            <FadeIn className="bg-white/5 border border-white/10 rounded-[2rem] p-8 hover:bg-white/10 transition-colors flex flex-col">
               <div className="mb-6">
-                <KeySquare className="w-10 h-10 text-[#191919] mb-4" />
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">Webová Aplikace</h3>
-                <p className="text-slate-500">Systémy na míru, klientské zóny a portály s pokročilou logikou a integracemi.</p>
+                <KeySquare className="w-10 h-10 text-white mb-4" />
+                <h3 className="text-2xl font-bold mb-2">3. Webová Aplikace</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">Pokročilý systém s vlastní databází pro automatizaci procesů, správu klientských dat nebo nabídku softwaru jako služby (SaaS).</p>
               </div>
               <ul className="space-y-4 mb-8 flex-1">
-                <li className="flex items-start gap-3 text-sm font-medium text-slate-700"><CheckCircle2 className="w-5 h-5 text-[#191919] shrink-0" /> Zabezpečená zóna pro uživatele</li>
-                <li className="flex items-start gap-3 text-sm font-medium text-slate-700"><CheckCircle2 className="w-5 h-5 text-[#191919] shrink-0" /> Integrace na třetí strany (API)</li>
-                <li className="flex items-start gap-3 text-sm font-medium text-slate-700"><CheckCircle2 className="w-5 h-5 text-[#191919] shrink-0" /> Vlastní databáze (Supabase)</li>
+                <li className="flex items-start gap-3 text-sm font-medium text-slate-300"><CheckCircle2 className="w-5 h-5 text-white shrink-0" /> Zabezpečená klientská zóna</li>
+                <li className="flex items-start gap-3 text-sm font-medium text-slate-300"><CheckCircle2 className="w-5 h-5 text-white shrink-0" /> Napojení na účetnictví / API</li>
+                <li className="flex items-start gap-3 text-sm font-medium text-slate-300"><CheckCircle2 className="w-5 h-5 text-white shrink-0" /> Vlastní databáze (Supabase)</li>
               </ul>
-              <div className="pt-6 border-t border-slate-200">
-                <span className="text-xs font-bold uppercase tracking-widest text-slate-400">Dodání</span>
-                <p className="font-bold text-slate-900">Individuálně na míru</p>
+              <div className="pt-6 border-t border-white/10">
+                <span className="text-xs font-bold uppercase tracking-widest text-slate-500">Dodání</span>
+                <p className="font-bold text-white">Individuálně na míru</p>
               </div>
             </FadeIn>
 
@@ -395,6 +413,49 @@ export function LandingPage() {
               </div>
             </motion.div>
           </FadeIn>
+
+          {/* Rozšíření: Klientský portál detaily */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-20">
+            <FadeIn className="bg-[#FAFAFA] border border-slate-200/60 rounded-[2rem] p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-slate-100">
+                <Clock className="w-6 h-6 text-[#191919]" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Reálný čas</h3>
+              <p className="text-slate-500 leading-relaxed text-sm">
+                Přesně víte, na čem zrovna pracujeme. Fáze projektu a aktuální progres vidíte přehledně hned po přihlášení.
+              </p>
+            </FadeIn>
+            
+            <FadeIn className="bg-[#FAFAFA] border border-slate-200/60 rounded-[2rem] p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-slate-100">
+                <LayoutTemplate className="w-6 h-6 text-[#191919]" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Vše na jednom místě</h3>
+              <p className="text-slate-500 leading-relaxed text-sm">
+                Už žádné hledání smluv, faktur nebo přístupů v e-mailech. Kompletní dokumentaci a podklady máte vždy po ruce.
+              </p>
+            </FadeIn>
+
+            <FadeIn className="bg-[#FAFAFA] border border-slate-200/60 rounded-[2rem] p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-slate-100">
+                <MessageCircle className="w-6 h-6 text-[#191919]" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Okamžitá zpětná vazba</h3>
+              <p className="text-slate-500 leading-relaxed text-sm">
+                Můžete pohodlně schvalovat design nebo nám rovnou z portálu posílat poznámky a požadavky na úpravy.
+              </p>
+            </FadeIn>
+
+            <FadeIn className="bg-[#FAFAFA] border border-slate-200/60 rounded-[2rem] p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-slate-100">
+                <CheckCircle2 className="w-6 h-6 text-[#191919]" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Konec e-mailům</h3>
+              <p className="text-slate-500 leading-relaxed text-sm">
+                Veškerá komunikace a důležité notifikace probíhají přímo v portálu. Čistší schránka, rychlejší výsledek.
+              </p>
+            </FadeIn>
+          </div>
         </StaggerSection>
       </section>
 
@@ -426,6 +487,37 @@ export function LandingPage() {
                 </div>
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 bg-[#191919] rounded-b-xl" />
               </div>
+            </FadeIn>
+          </div>
+
+          {/* Rozšíření: Vizuální dominance detaily */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-24">
+            <FadeIn className="bg-white border border-slate-200/60 rounded-[2rem] p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <h3 className="text-xl font-bold text-slate-900 mb-3">První dojem</h3>
+              <p className="text-slate-500 leading-relaxed text-sm">
+                Zákazník se rozhoduje během prvních 3 vteřin. Moderní a čistý design okamžitě buduje důvěru a ukazuje vaši profesionalitu.
+              </p>
+            </FadeIn>
+            
+            <FadeIn className="bg-white border border-slate-200/60 rounded-[2rem] p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Mikro-animace</h3>
+              <p className="text-slate-500 leading-relaxed text-sm">
+                Plynulé přechody a interaktivní prvky dodávají webu pocit luxusu a prémiovosti. Výrazně zvyšují dobu strávenou na stránce.
+              </p>
+            </FadeIn>
+
+            <FadeIn className="bg-white border border-slate-200/60 rounded-[2rem] p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Mobile-first</h3>
+              <p className="text-slate-500 leading-relaxed text-sm">
+                Až 80 % návštěv přichází z mobilních telefonů. Naše weby jsou primárně navrženy a odladěny pro menší obrazovky.
+              </p>
+            </FadeIn>
+
+            <FadeIn className="bg-white border border-slate-200/60 rounded-[2rem] p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <h3 className="text-xl font-bold text-slate-900 mb-3">UX a Psychologie</h3>
+              <p className="text-slate-500 leading-relaxed text-sm">
+                Design není jen hezký obrázek. Strategicky vedeme oko uživatele od problému až k finálnímu tlačítku k nákupu.
+              </p>
             </FadeIn>
           </div>
         </StaggerSection>
